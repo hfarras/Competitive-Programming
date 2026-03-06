@@ -46,68 +46,158 @@ In the second example, all boxes are durable enough to build one tower of **8** 
 In the third example, the weight of the box exceeds its durability, so they cannot be stacked on top of each other. As a result, **5** separate towers will have to be built.
 
 ## Solve Documentation
-Given that:
--  Monocarp has ***n*** identical boxes
--  The weight of each box is ***m***
--  The durability of each box is ***d***
 
-Monocarp wants to build several towers by stacking boxes on top of each other and must contain at least one box. 
+### Problem Understanding
 
-#### Constraint 
+We are given:
 
-For **every box**, the **total weight of all boxes above it must not exceed its durability**.
+- **n** — the number of identical boxes  
+- **m** — the weight of each box  
+- **d** — the durability of each box  
 
-Because all boxes are idenctical, each box weighs ***m***, and box durability ***d***.
+Monocarp wants to stack these boxes into several **towers**. Each tower must contain **at least one box**.
 
-$$ m + d <= d $$
+However, there is a constraint:
 
-So, there are **k** boxes in each stack
+> For every box, the **total weight of all boxes above it must not exceed its durability**.
 
-$$ k = \left\lfloor \frac{d+m}{m} \right\rfloor$$
+Since all boxes are identical:
 
-### Example Analysis
+- Each box weighs **m**
+- If a tower has **k boxes**, the bottom box must support the weight of the **k − 1** boxes above it.
+
+Therefore, the total weight above the bottom box is:
+
+$$(k - 1) \times m $$
+
+To prevent the box from breaking:
+
+$$(k - 1) \times m \le d $$
+
+---
+
+### Maximum Boxes per Tower
+
+From the constraint:
+
+$$ (k - 1)m \le d $$
+
+$$ k - 1 \le \frac{d}{m} $$
+
+$$ k \le \frac{d}{m} + 1 $$
+
+Thus, the **maximum number of boxes in a single tower** is:
+
+$$ k = \left\lfloor \frac{d}{m} \right\rfloor + 1 $$
+
+Which is equivalent to:
+
+$$ k = \left\lfloor \frac{d + m}{m} \right\rfloor $$
+
+This value represents the **maximum safe height** of a tower.
+
+---
+
+### Strategy
+
+To **minimize the number of towers**, we should make each tower as tall as possible.
+
+Steps:
+
+1. Compute the maximum boxes per tower:
+
+$$ k = \left\lfloor \frac{d + m}{m} \right\rfloor $$
+
+2. Distribute all **n** boxes into towers of height **k**.
+
+3. The minimum number of towers is:
+
+$$ \text{towers} = \left\lceil \frac{n}{k} \right\rceil $$
+
+---
+
+### Example Walkthrough
+
+#### Example 1
 
 $$ n = 8, m = 10, d = 20 $$
 
-***k*** boxes in each stack:
+Maximum boxes per tower:
 
-$$ k = \left\lfloor \frac{30}{10} \right\rfloor$$
-$$ k = \left\lfloor 3 \right\rfloor$$
-$$ k = 3$$
+$$ k = \left\lfloor \frac{20 + 10}{10} \right\rfloor = 3 $$
 
-If **k ≤ n**, then **n - k**.
-If **k > n**, then **n**
+Each tower can contain at most **3 boxes**.
 
-$$ 8 -> 3 + 5 -> 3 + 3 + 2 $$
+Distribution:
 
-Therefore are 3 stack with each stack has 3 boxes, 3 boxes, and 2 boxes;
+$$ 8 = 3 + 3 + 2 $$
+
+So the minimum number of towers is
+
+$$ 3 $$
+
+---
+
+#### Example 2
+
+$$ n = 8, m = 1, d = 20 $$
+
+$$ k = \left\lfloor \frac{21}{1} \right\rfloor = 21 $$
+
+Since **k > n**, all boxes can be placed in a **single tower**. Therefore the answer is
+
+$$ 1 $$
+
+---
+
+#### Example 3
+
+$$ n = 5, m = 3, d = 2 $$
+
+$$ k = \left\lfloor \frac{5}{3} \right\rfloor = 1 $$
+
+Only **one box per tower** is safe.
+
+$$ 5 = 1 + 1 + 1 + 1 + 1 $$
+
+Number of towers:
+
+$$ 5 $$
+
+---
+
+### Complexity Analysis
+
+For each test case, we only perform **simple arithmetic operations**.
+
+Time Complexity:
+
+$$  O(t) $$
+
+Where:
+
+- **t ≤ 10⁴**
+
+This is efficient and easily fits within the problem constraints.
+
+---
 
 ### Code Implementation
-```c++
+
+```cpp
 #include<bits/stdc++.h>
-using namespace std;
- 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
- 
     int t;
-    cin >> t;
+    scanf("%d", &t);
     while(t--) {
-        float n, m, d;
-        cin >> n >> m >> d;
+        int n, m, d;
+        scanf("%d %d %d", &n, &m, &d);
  
-        float stack = floor((d+m)/m);
-        int tow = 0;
-        
-        while(n >= stack) {
-            tow++;
-            n = n - stack;
-        }
-        if(n < stack && n > 0) tow++; //remainder n > 0 & n < divider
-        cout << tow << "\n";
+        int k = (d / m) + 1;          // maximum boxes per tower
+        int towers = (n + k - 1) / k; // ceil(n / k)
+        printf("%d\n", towers);
     }
 }
-
 ```
-   
+#### Key Insight
+Since all boxes are identical, we only need to determine the **maximum safe height of a tower**. After that, the problem reduces to distributing **n boxes** into towers of size **k** to minimize the total number of towers.
