@@ -2,19 +2,19 @@
 
 Source : (https://codeforces.com/contest/2203/problem/A)
 
-Monocarp has ***n*** identical boxes. The weight of each box is ***m***, and the durability of each box is ***d***.
+Monocarp has `n` identical boxes. The weight of each box is `m`, and the durability of each box is `d`.
 
 To save space, Monocarp wants to build several "towers" of boxes by stacking them on top of each other. Each tower will consist of a positive (greater than 0) integer number of boxes stacked on top of each other. To ensure that no box breaks, the following condition must be met:
 
-- for each box, the **total** weight of all boxes above it must not exceed the durability of that box.
+- for each box, the `total` weight of all boxes above it must not exceed the durability of that box.
 
 Help Monocarp calculate the minimum number of towers he can achieve, given that each of the nboxes must be used.
 
 ### Input
 
-The first line contains a single integer ***t (1 ≤ t ≤ 10<sup>4</sup>)*** — the number of test cases.
+The first line contains a single integer `t` $`(1 \le t \le 10^4)`$ — the number of test cases.
 
-Each test case consists of a single line containing three integers ***n, m, d (1 ≤ n, m, d ≤ 50)***.
+Each test case consists of a single line containing three integers  `n`, `m`, `d` $`(1 \le n, m, d \le 50)`$.
 
 ### Output
 
@@ -39,11 +39,11 @@ For each test case, print one integer — the minimum number of towers.
 
 ### Note
 
-In the first example, it is possible to build three towers consisting of **3**, **2**, and **3** boxes, respectively.
+In the first example, it is possible to build three towers consisting of `3`, `2`, and `3` boxes, respectively.
 
-In the second example, all boxes are durable enough to build one tower of **8** boxes.
+In the second example, all boxes are durable enough to build one tower of `8` boxes.
 
-In the third example, the weight of the box exceeds its durability, so they cannot be stacked on top of each other. As a result, **5** separate towers will have to be built.
+In the third example, the weight of the box exceeds its durability, so they cannot be stacked on top of each other. As a result, `5` separate towers will have to be built.
 
 ## Solve Documentation
 
@@ -51,9 +51,9 @@ In the third example, the weight of the box exceeds its durability, so they cann
 
 We are given:
 
-- **n** — the number of identical boxes  
-- **m** — the weight of each box  
-- **d** — the durability of each box  
+- `n` — the number of identical boxes  
+- `m` — the weight of each box  
+- `d` — the durability of each box  
 
 Monocarp wants to stack these boxes into several **towers**. Each tower must contain **at least one box**.
 
@@ -63,8 +63,8 @@ However, there is a constraint:
 
 Since all boxes are identical:
 
-- Each box weighs **m**
-- If a tower has **k boxes**, the bottom box must support the weight of the **k − 1** boxes above it.
+- Each box weighs `n`
+- If a tower has `k` **boxes**, the bottom box must support the weight of the `k-1` boxes above it.
 
 Therefore, the total weight above the bottom box is:
 
@@ -126,7 +126,7 @@ Maximum boxes per tower:
 
 $$ k = \left\lfloor \frac{20 + 10}{10} \right\rfloor = 3 $$
 
-Each tower can contain at most **3 boxes**.
+Each tower can contain at most `3` **boxes**.
 
 Distribution:
 
@@ -176,7 +176,7 @@ $$  O(t) $$
 
 Where:
 
-- **t ≤ 10⁴**
+- $` t \le 10^4 `$
 
 This is efficient and easily fits within the problem constraints.
 
@@ -200,4 +200,4 @@ int main() {
 }
 ```
 #### Key Insight
-Since all boxes are identical, we only need to determine the **maximum safe height of a tower**. After that, the problem reduces to distributing **n boxes** into towers of size **k** to minimize the total number of towers.
+Since all boxes are identical, we only need to determine the **maximum safe height of a tower**. After that, the problem reduces to distributing `n` boxes into towers of size `k` to minimize the total number of towers.
